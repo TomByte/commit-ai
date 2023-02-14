@@ -1,6 +1,9 @@
 package git
 
-import "os/exec"
+import (
+	"commit-ai/internal/log"
+	"os/exec"
+)
 
 type GIT struct {
 }
@@ -10,19 +13,20 @@ func NewGIT() *GIT {
 }
 
 func (g *GIT) IsRepo() bool {
-	cmd := exec.Command("git status")
-
-	err := cmd.Run()
+	cmd, err := exec.Command("git", "status").Output()
 
 	if err != nil {
+		log.Error(string(cmd))
 		return false
 	}
 
+	log.Info(string(cmd))
 	return true
 }
 
 func (g *GIT) GetDiff() (string, error) {
-	output, err := exec.Command("git diff --cached . \":(exclude)package-lock.json\" \":(exclude)yarn.lock\" \":(exclude)pnpm-lock.yaml\"").Output()
+
+	output, err := exec.Command("git", "diff", "--cached", ".").Output()
 
 	if err != nil {
 		return "", err

@@ -17,7 +17,7 @@ func Exec() {
 
 	diff, err := g.GetDiff()
 	if err != nil {
-		log.Error("unable to create a usable diff for message")
+		log.Error("unable to create a usable diff for message", err)
 		return
 	}
 

@@ -1,7 +1,7 @@
 package openai
 
 import (
-	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"os"
@@ -18,14 +18,22 @@ type OpenAI struct {
 }
 
 type CompletionsRequest struct {
-	Model       string `json:"model"`
-	Prompt      string `json:"prompt"`
-	MaxTokens   int    `json:"max_tokens"`
-	Temperature int    `json:"temperature"`
+	Model       string  `json:"model"`
+	Prompt      string  `json:"prompt"`
+	MaxTokens   int     `json:"max_tokens"`
+	Temperature float64 `json:"temperature"`
 }
 
 type CompletionsResponse struct {
 	Choices []Choice `json:"choices"`
+}
+
+type CompletionsErrorResponse struct {
+	Error Error `json:"error"`
+}
+
+type Error struct {
+	Message string `json:"message"`
 }
 
 type Choice struct {
@@ -44,21 +52,23 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 	request := CompletionsRequest{
 		Model:       "text-davinci-003",
 		Prompt:      fmt.Sprintf("%s%s", Prompt, diff),
-		MaxTokens:   4000,
-		Temperature: 0,
+		MaxTokens:   200,
+		Temperature: 0.7,
 	}
-
-	body, _ := json.Marshal(request)
 
 	resp, err := ai.Client.R().
 		SetHeader("Authorization", "Bearer "+ai.Key).
 		SetHeader("Content-Type", "application/json").
-		SetBody(body).
-		SetResult(&CompletionsResponse{}).
+		SetBody(request).
+		SetError(&CompletionsErrorResponse{}).
 		Post(fmt.Sprintf(ai.Url + "/completions"))
 
 	if err != nil {
 		return "", err
+	}
+
+	if resp.IsError() {
+		return "", errors.New(resp.Result().(*CompletionsErrorResponse).Error.Message)
 	}
 
 	result := resp.Result().(*CompletionsResponse)
