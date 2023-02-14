@@ -18,10 +18,15 @@ type OpenAI struct {
 }
 
 type CompletionsRequest struct {
-	Model       string  `json:"model"`
-	Prompt      string  `json:"prompt"`
-	MaxTokens   int     `json:"max_tokens"`
-	Temperature float64 `json:"temperature"`
+	Model            string  `json:"model"`
+	Prompt           string  `json:"prompt"`
+	MaxTokens        float64 `json:"max_tokens"`
+	Temperature      float64 `json:"temperature"`
+	TopP             float64 `json:"top_p"`
+	FrequencyPenalty float64 `json:"frequency_penalty"`
+	PresencePenalty  float64 `json:"presence_penalty"`
+	Stream           bool    `json:"stream"`
+	N                float64 `json:"n"`
 }
 
 type CompletionsResponse struct {
@@ -50,10 +55,15 @@ func NewOpenAI() *OpenAI {
 
 func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 	request := CompletionsRequest{
-		Model:       "text-davinci-003",
-		Prompt:      fmt.Sprintf("%s%s", Prompt, diff),
-		MaxTokens:   200,
-		Temperature: 0.7,
+		Model:            "text-davinci-003",
+		Prompt:           fmt.Sprintf("%s%s", Prompt, diff),
+		MaxTokens:        200,
+		Temperature:      0.7,
+		TopP:             1,
+		FrequencyPenalty: 1,
+		PresencePenalty:  1,
+		Stream:           false,
+		N:                1,
 	}
 
 	resp, err := ai.Client.R().
@@ -61,6 +71,7 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 		SetHeader("Content-Type", "application/json").
 		SetBody(request).
 		SetError(&CompletionsErrorResponse{}).
+		SetResult(&CompletionsResponse{}).
 		Post(fmt.Sprintf(ai.Url + "/completions"))
 
 	if err != nil {

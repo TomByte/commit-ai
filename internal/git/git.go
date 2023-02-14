@@ -1,7 +1,6 @@
 package git
 
 import (
-	"commit-ai/internal/log"
 	"os/exec"
 )
 
@@ -13,19 +12,17 @@ func NewGIT() *GIT {
 }
 
 func (g *GIT) IsRepo() bool {
-	cmd, err := exec.Command("git", "status").Output()
+	cmd := exec.Command("git", "status")
+	err := cmd.Run()
 
 	if err != nil {
-		log.Error(string(cmd))
 		return false
 	}
 
-	log.Info(string(cmd))
 	return true
 }
 
 func (g *GIT) GetDiff() (string, error) {
-
 	output, err := exec.Command("git", "diff", "--cached", ".").Output()
 
 	if err != nil {
@@ -33,4 +30,15 @@ func (g *GIT) GetDiff() (string, error) {
 	}
 
 	return string(output), nil
+}
+
+func (g *GIT) Commit(message string) error {
+	cmd := exec.Command("git", "commit", "-m", message)
+	err := cmd.Run()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
