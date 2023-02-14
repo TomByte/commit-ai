@@ -5,6 +5,7 @@ import (
 	"commit-ai/internal/git"
 	"commit-ai/internal/log"
 	"commit-ai/internal/openai"
+	"fmt"
 )
 
 func Exec() {
@@ -17,6 +18,12 @@ func Exec() {
 	}
 
 	diff, err := g.GetDiff()
+
+	if len(diff) == 0 {
+		log.Error("There is no diff to generate a commit for")
+		return
+	}
+
 	if err != nil {
 		log.Error("Unable to create a usable diff for message")
 		return
@@ -28,7 +35,7 @@ func Exec() {
 		return
 	}
 
-	log.Info("Generated Commit Message: ", msg)
+	log.Info(fmt.Sprintf("Generated commit message: %s", msg))
 
 	if !cli.Confirm() {
 		return

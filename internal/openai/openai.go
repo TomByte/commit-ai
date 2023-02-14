@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	Prompt = "I want you to act like a git commit message writer. I will input a git diff and your job is to convert it into a useful commit message. Do not preface the commit with anything, use the present tense, return a complete sentence, and do not repeat yourself: "
+	Prompt = "I want you to act like a git commit message writer. I will input a git diff and your job is to convert it into a useful commit message without any prefix such as 'Commit Message'. Do not preface the commit with anything, use the present tense, return a complete sentence, and do not repeat yourself: "
 )
 
 type OpenAI struct {
@@ -57,8 +57,8 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 	request := CompletionsRequest{
 		Model:            "text-davinci-003",
 		Prompt:           fmt.Sprintf("%s%s", Prompt, diff),
-		MaxTokens:        200,
-		Temperature:      0.7,
+		MaxTokens:        100,
+		Temperature:      0.8,
 		TopP:             1,
 		FrequencyPenalty: 1,
 		PresencePenalty:  1,
