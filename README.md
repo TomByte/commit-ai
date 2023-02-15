@@ -1,3 +1,10 @@
+<div align="center">
+  <div>
+    <img src=".github/commit-ai.png" alt="commit-ai"/>
+    <h1 align="center">commit-ai</h1>
+  </div>
+</div>
+
 # commit-ai
 commit-ai is an open-source project written in Go that uses OpenAI to generate descriptive commit messages based off your git diff.
 
