@@ -57,7 +57,7 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 	request := CompletionsRequest{
 		Model:            "text-davinci-003",
 		Prompt:           fmt.Sprintf("%s%s", Prompt, diff),
-		MaxTokens:        100,
+		MaxTokens:        200,
 		Temperature:      0.7,
 		TopP:             1,
 		FrequencyPenalty: 1,
