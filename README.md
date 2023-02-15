@@ -10,6 +10,9 @@ commit-ai is an open-source project written in Go that uses OpenAI to generate d
 ### Why?
 Because who has time to remember what you did in that code 2 minutes ago.
 
+## Use
+Download the latest release for your OS from [releases](https://github.com/TomByte/commit-ai/releases).
+
 ## Environment Variables
 The only required environment variable is:
 ```shell
