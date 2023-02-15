@@ -1,6 +1,6 @@
 <div align="center">
   <div>
-    <img src=".github/commit-ai.png" alt="commit-ai"/>
+    <img src=".github/screenshot.png" width="630" height="394" alt="commit-ai"/>
     <h1 align="center">commit-ai</h1>
   </div>
 </div>
