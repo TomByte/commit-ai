@@ -25,18 +25,19 @@ export OPENAI_KEY=xxxx
 Replace `xxxx` with your OpenAI key, you can get from [OpenAI](https://platform.openai.com/account/api-keys). You can either set this in your shell rc file (e.g `.zshrc`) or just export for your current session.
 
 ## Run
+To run commit-ai, you can use the following command in a GIT repository:
+```shell
+cai
+```
+
+## Run From Source
 To run the project, you can use the following command:
 ```shell
 go run .
 ```
 
-## Build
+## Build From Source
 To build the project, you will need to have Go installed on your machine. You can then run the following command in your terminal:
-
-```shell
-go build -o ./build/cai
-```
-This will create an executable file called `cai` you can sym link or copy to your path accessible /bin directory to run from anywhere.
 
 ## Test
 To run tests, you can use the following command:
