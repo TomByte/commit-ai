@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/briandowns/spinner"
 	"github.com/go-resty/resty/v2"
+	"strings"
 	"time"
 )
 
@@ -70,7 +71,7 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 
 	s := spinner.New(spinner.CharSets[4], 100*time.Millisecond)
 	s.Start()
-	s.Suffix = " Generating Commit"
+	s.Suffix = " Generating commit"
 
 	resp, err := ai.Client.R().
 		SetHeader("Authorization", "Bearer "+ai.Key).
@@ -92,5 +93,10 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 
 	result := resp.Result().(*CompletionsResponse)
 
-	return result.Choices[0].Text, nil
+	return formatCommit(result.Choices[0].Text), nil
+}
+
+func formatCommit(commit string) string {
+	c := strings.ReplaceAll(commit, "\n", "")
+	return strings.TrimRight(c, ".")
 }

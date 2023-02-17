@@ -1,6 +1,7 @@
 package git
 
 import (
+	"errors"
 	"os/exec"
 )
 
@@ -38,6 +39,18 @@ func (g *GIT) Commit(message string) error {
 
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func CheckDiff(diff string) error {
+	if len(diff) == 0 {
+		return errors.New("There is no diff to generate a commit for")
+	}
+
+	if len(diff) > 4000 {
+		return errors.New("Diff is too large - max 4000 characters")
 	}
 
 	return nil

@@ -6,15 +6,18 @@ import (
 
 func Error(messages ...any) {
 	c := color.New(color.FgRed)
-	c.Println(messages...)
+	m := append([]any{"▶"}, messages...)
+	c.Println(m...)
 }
 
 func Info(messages ...any) {
 	c := color.New(color.FgCyan)
-	c.Println(messages...)
+	m := append([]any{"▶"}, messages...)
+	c.Println(m...)
 }
 
 func Success(messages ...any) {
 	c := color.New(color.FgGreen)
-	c.Println(messages...)
+	m := append([]any{"▶"}, messages...)
+	c.Println(m...)
 }

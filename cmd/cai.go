@@ -28,18 +28,15 @@ func Exec() {
 
 	diff, err := g.GetDiff()
 
-	if len(diff) == 0 {
-		log.Error("There is no diff to generate a commit for")
-		return
-	}
-
-	if len(diff) > 4000 {
-		log.Error("Diff is too large - max 4000 characters")
-		return
-	}
-
 	if err != nil {
 		log.Error("Unable to create a usable diff for message")
+		return
+	}
+
+	err = git.CheckDiff(diff)
+
+	if err != nil {
+		log.Error(err)
 		return
 	}
 
