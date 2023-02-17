@@ -1,10 +1,12 @@
 package openai
 
 import (
+	"commit-ai/internal/config"
 	"errors"
 	"fmt"
+	"github.com/briandowns/spinner"
 	"github.com/go-resty/resty/v2"
-	"os"
+	"time"
 )
 
 const (
@@ -45,10 +47,10 @@ type Choice struct {
 	Text string `json:"text"`
 }
 
-func NewOpenAI() *OpenAI {
+func NewOpenAI(config *config.Config) *OpenAI {
 	return &OpenAI{
-		Key:    os.Getenv("OPENAI_KEY"),
-		Url:    "https://api.openai.com/v1",
+		Key:    config.OpenAIKey,
+		Url:    config.OpenAIUrl,
 		Client: resty.New(),
 	}
 }
@@ -66,6 +68,10 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 		N:                1,
 	}
 
+	s := spinner.New(spinner.CharSets[4], 100*time.Millisecond)
+	s.Start()
+	s.Suffix = " Generating Commit"
+
 	resp, err := ai.Client.R().
 		SetHeader("Authorization", "Bearer "+ai.Key).
 		SetHeader("Content-Type", "application/json").
@@ -73,6 +79,8 @@ func (ai *OpenAI) GetCommitMessage(diff string) (string, error) {
 		SetError(&CompletionsErrorResponse{}).
 		SetResult(&CompletionsResponse{}).
 		Post(fmt.Sprintf(ai.Url + "/completions"))
+
+	s.Stop()
 
 	if err != nil {
 		return "", err

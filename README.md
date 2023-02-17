@@ -54,7 +54,8 @@ Massively inspired by [Nutlope/aicommits](https://github.com/Nutlope/aicommits).
 - [ ] Add tests
 - [ ] Fix 2000 character limit on diff
 - [ ] Configurable excludes from diff
-- [ ] Add to brew
+- [ ] Config-file powered config
+- [x] Add to brew
 
 ## Contributing
 If you would like to contribute to the "commit-ai" project, please fork the repository and submit a pull request. We welcome contributions of all kinds, from bug fixes to new features.

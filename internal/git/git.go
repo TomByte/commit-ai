@@ -23,7 +23,7 @@ func (g *GIT) IsRepo() bool {
 }
 
 func (g *GIT) GetDiff() (string, error) {
-	output, err := exec.Command("git", "diff", "--cached", ".").Output()
+	output, err := exec.Command("git", "diff", "--cached", ".", ":!go.sum", ":!go.mod").Output()
 
 	if err != nil {
 		return "", err

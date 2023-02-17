@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"commit-ai/internal/cli"
+	"commit-ai/internal/config"
 	"commit-ai/internal/git"
 	"commit-ai/internal/log"
 	"commit-ai/internal/openai"
@@ -9,8 +10,16 @@ import (
 )
 
 func Exec() {
+	c := config.NewConfig()
+	err := c.Load()
+
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
 	g := git.NewGIT()
-	ai := openai.NewOpenAI()
+	ai := openai.NewOpenAI(c)
 
 	if !g.IsRepo() {
 		log.Error("Current directory is not a GIT repository")
@@ -21,6 +30,11 @@ func Exec() {
 
 	if len(diff) == 0 {
 		log.Error("There is no diff to generate a commit for")
+		return
+	}
+
+	if len(diff) > 4000 {
+		log.Error("Diff is too large - max 4000 characters")
 		return
 	}
 
