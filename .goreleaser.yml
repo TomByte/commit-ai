@@ -9,7 +9,7 @@ builds:
     env:
       - CGO_ENABLED=0
     flags:
-      - -mod=vendor
+      - -mod=mod
 
 release:
   prerelease: auto
