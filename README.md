@@ -29,15 +29,19 @@ To run commit-ai, you can use the following command in a GIT repository:
 ```shell
 cai
 ```
+## Build From Source
+To build the project, you will need to have Go installed on your machine. You can then run the following command in your terminal:
+
+```shell
+go build -o build/cai
+```
+
 
 ## Run From Source
 To run the project, you can use the following command:
 ```shell
 go run .
 ```
-
-## Build From Source
-To build the project, you will need to have Go installed on your machine. You can then run the following command in your terminal:
 
 ## Test
 To run tests, you can use the following command:
